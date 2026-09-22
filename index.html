@@ -3,154 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WinterArc • Winter Arc</title>
+    <title>Winter Arc Challenge - 75 Jours</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: #FAF8F5;
-            color: #4A403A;
-            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            background-color: #fafafa;
+            color: #334155;
+            font-family: system-ui, -apple-system, sans-serif;
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between max-w-md mx-auto px-5 py-6">
+<body class="bg-slate-50 text-slate-800">
+<div class="min-h-screen flex flex-col justify-between max-w-2xl mx-auto px-4 py-6">
 
     <!-- Header -->
-    <header class="flex justify-between items-center mb-6">
+    <header class="flex justify-between items-center mb-6 border-b border-rose-100 pb-4">
         <div>
-            <h1 class="text-xl font-bold tracking-wider text-stone-800">ELEVATE</h1>
-            <p id="current-date-display" class="text-xs text-stone-400 capitalize mt-0.5"></p>
+            <h1 class="text-2xl font-bold text-slate-800 tracking-wide">
+                WINTER ARC
+            </h1>
+            <p id="current-date-display" class="text-xs text-slate-500 mt-1 capitalize"></p>
         </div>
-        <div class="flex items-center space-x-1.5 bg-rose-50/80 border border-rose-100/80 px-3 py-1.5 rounded-full shadow-sm">
-            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-rose-400"></i>
-            <span id="streak-count" class="text-xs font-semibold text-rose-700">0 jours</span>
+        <div class="flex items-center space-x-2 bg-rose-50 px-3.5 py-1.5 rounded-full border border-rose-100 shadow-sm">
+            <i data-lucide="flame" class="w-4 h-4 text-rose-400"></i>
+            <span id="streak-count" class="text-sm font-semibold text-rose-600">0 jours</span>
         </div>
     </header>
 
-    <!-- Navigation -->
-    <nav class="flex space-x-1.5 bg-white/80 p-1.5 rounded-2xl border border-stone-200/60 shadow-sm mb-6 backdrop-blur-sm">
-        <button onclick="switchTab('daily')" id="tab-daily" class="flex-1 py-2 px-3 rounded-xl text-xs font-semibold flex items-center justify-center space-x-1.5 transition-all bg-emerald-50 text-emerald-800 border border-emerald-100 shadow-sm">
-            <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
-            <span>Rituels</span>
+    <!-- Navigation Tabs -->
+    <nav class="flex space-x-2 bg-white p-1.5 rounded-2xl border border-slate-100 shadow-sm mb-6">
+        <button onclick="switchTab('daily')" id="tab-daily" class="flex-1 py-2.5 px-3 rounded-xl text-sm font-medium flex items-center justify-center space-x-2 transition-all bg-sky-100 text-sky-700 shadow-sm">
+            <i data-lucide="check-square" class="w-4 h-4"></i>
+            <span>Tâches</span>
         </button>
-        <button onclick="switchTab('calendar')" id="tab-calendar" class="flex-1 py-2 px-3 rounded-xl text-xs font-semibold flex items-center justify-center space-x-1.5 transition-all text-stone-400 hover:text-stone-700">
-            <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+        <button onclick="switchTab('calendar')" id="tab-calendar" class="flex-1 py-2.5 px-3 rounded-xl text-sm font-medium flex items-center justify-center space-x-2 transition-all text-slate-500 hover:text-slate-800">
+            <i data-lucide="calendar" class="w-4 h-4"></i>
             <span>Calendrier</span>
         </button>
-        <button onclick="switchTab('progress')" id="tab-progress" class="flex-1 py-2 px-3 rounded-xl text-xs font-semibold flex items-center justify-center space-x-1.5 transition-all text-stone-400 hover:text-stone-700">
-            <i data-lucide="trophy" class="w-3.5 h-3.5"></i>
-            <span>Mon Arc</span>
+        <button onclick="switchTab('progress')" id="tab-progress" class="flex-1 py-2.5 px-3 rounded-xl text-sm font-medium flex items-center justify-center space-x-2 transition-all text-slate-500 hover:text-slate-800">
+            <i data-lucide="trophy" class="w-4 h-4"></i>
+            <span>Progression</span>
         </button>
     </nav>
 
-    <!-- PAGE 1: RITUELS DU JOUR -->
-    <main id="view-daily" class="space-y-5 flex-grow">
-        <!-- Carte Progression du jour -->
-        <div class="bg-white rounded-3xl p-5 border border-stone-100 shadow-sm flex items-center justify-between">
-            <div>
-                <span class="text-xs font-medium text-stone-400 uppercase tracking-wider">Aujourd'hui</span>
-                <h2 class="text-lg font-bold text-stone-800">Rituels Quotidiens</h2>
-                <p id="daily-subtext" class="text-xs text-emerald-600 font-medium mt-0.5">0 sur 0 complétés</p>
+    <!-- PAGE 1: TACHES DU JOUR -->
+    <main id="view-daily" class="space-y-6 flex-grow">
+        <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm space-y-6">
+            <div class="flex justify-between items-center">
+                <h2 class="text-lg font-semibold flex items-center gap-2 text-slate-800">
+                    <i data-lucide="list-todo" class="w-5 h-5 text-sky-400"></i>
+                    Objectifs du jour
+                </h2>
+                <span id="daily-completion-badge" class="text-xs px-3 py-1 rounded-full bg-sky-50 text-sky-600 font-medium border border-sky-100">0%</span>
             </div>
-            <div class="relative flex items-center justify-center">
-                <div id="daily-completion-badge" class="text-sm font-bold text-stone-700">0%</div>
+
+            <!-- Progression du jour -->
+            <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                <div id="daily-progress-bar" class="bg-gradient-to-r from-sky-300 to-rose-300 h-full w-0 transition-all duration-500 rounded-full"></div>
             </div>
-        </div>
 
-        <!-- Liste des tâches -->
-        <div id="task-list" class="space-y-3"></div>
+            <!-- Liste des tâches -->
+            <div id="task-list" class="space-y-3">
+                <!-- Généré par JS -->
+            </div>
 
-        <!-- Ajouter une habitude -->
-        <form onsubmit="addTask(event)" class="flex gap-2 pt-2">
-            <input type="text" id="new-task-input" placeholder="Nouveau rituel..." class="flex-1 bg-white border border-stone-200/80 rounded-2xl px-4 py-2.5 text-xs focus:outline-none focus:border-emerald-300 text-stone-700 placeholder-stone-300 shadow-sm">
-            <button type="submit" class="bg-stone-800 text-white p-2.5 rounded-2xl transition-colors shadow-sm">
-                <i data-lucide="plus" class="w-4 h-4"></i>
-            </button>
-        </form>
-
-        <!-- Mini Journal -->
-        <div class="bg-white/60 rounded-3xl p-4 border border-stone-100/80 shadow-sm space-y-2 mt-4">
-            <span class="text-xs font-semibold text-stone-400 uppercase tracking-wider flex items-center gap-1.5">
-                <i data-lucide="heart" class="w-3.5 h-3.5 text-rose-300"></i> Gratitude du jour
-            </span>
-            <textarea id="daily-note" onchange="saveNote(this.value)" placeholder="Un petit mot doux sur votre journée..." class="w-full bg-transparent text-xs text-stone-600 placeholder-stone-300 focus:outline-none resize-none h-16"></textarea>
+            <!-- Ajouter une tâche -->
+            <form onsubmit="addTask(event)" class="mt-4 flex gap-2">
+                <input type="text" id="new-task-input" placeholder="Ajouter une nouvelle habitude..." class="flex-1 bg-slate-50 border border-slate-200 rounded-2xl px-4 py-2.5 text-sm focus:outline-none focus:border-sky-300 text-slate-700 placeholder-slate-400">
+                <button type="submit" class="bg-rose-200 hover:bg-rose-300 text-rose-800 p-2.5 rounded-2xl transition-colors shadow-sm">
+                    <i data-lucide="plus" class="w-5 h-5"></i>
+                </button>
+            </form>
         </div>
     </main>
 
     <!-- PAGE 2: CALENDRIER -->
-    <main id="view-calendar" class="space-y-5 flex-grow hidden">
-        <div class="bg-white rounded-3xl p-5 border border-stone-100 shadow-sm">
-            <div class="flex justify-between items-center mb-5">
-                <h2 id="calendar-month-title" class="text-base font-bold text-stone-800 capitalize">Mois</h2>
-                <div class="flex gap-1.5">
-                    <button onclick="changeMonth(-1)" class="p-1.5 rounded-xl bg-stone-50 text-stone-500 hover:bg-stone-100"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
-                    <button onclick="changeMonth(1)" class="p-1.5 rounded-xl bg-stone-50 text-stone-500 hover:bg-stone-100"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+    <main id="view-calendar" class="space-y-6 flex-grow hidden">
+        <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm">
+            <div class="flex justify-between items-center mb-6">
+                <h2 id="calendar-month-title" class="text-lg font-semibold text-slate-800 capitalize">Mois</h2>
+                <div class="flex gap-2">
+                    <button onclick="changeMonth(-1)" class="p-2 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-600"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+                    <button onclick="changeMonth(1)" class="p-2 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-600"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
                 </div>
             </div>
 
-            <div class="grid grid-cols-7 gap-1.5 text-center text-[10px] font-bold text-stone-300 mb-2">
+            <!-- Jours de la semaine -->
+            <div class="grid grid-cols-7 gap-2 text-center text-xs font-semibold text-slate-400 mb-3">
                 <div>LUN</div><div>MAR</div><div>MER</div><div>JEU</div><div>VEN</div><div>SAM</div><div>DIM</div>
             </div>
 
-            <div id="calendar-grid" class="grid grid-cols-7 gap-1.5"></div>
+            <!-- Grille du calendrier -->
+            <div id="calendar-grid" class="grid grid-cols-7 gap-2">
+                <!-- Généré par JS -->
+            </div>
 
-            <div class="flex items-center justify-around mt-5 text-[11px] text-stone-400 pt-3 border-t border-stone-50">
-                <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-200"></span> 100%</div>
-                <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-200"></span> &ge;50%</div>
-                <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-200"></span> &lt;50%</div>
+            <!-- Légende -->
+            <div class="flex flex-wrap items-center justify-around mt-6 text-xs text-slate-500 pt-4 border-t border-slate-100 gap-2">
+                <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-emerald-200 border border-emerald-300"></span> 100% fait</div>
+                <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-amber-100 border border-amber-200"></span> &ge; 50% fait</div>
+                <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-rose-100 border border-rose-200"></span> &lt; 50% fait</div>
             </div>
         </div>
     </main>
 
     <!-- PAGE 3: PROGRESSION 75 JOURS -->
-    <main id="view-progress" class="space-y-5 flex-grow hidden">
-        <div class="bg-white rounded-3xl p-5 border border-stone-100 shadow-sm space-y-5">
-            <div class="text-center py-4 bg-rose-50/30 rounded-2xl border border-rose-100/50">
-                <div id="total-progress-percent" class="text-4xl font-extrabold text-stone-800 mb-1">0%</div>
-                <div id="total-progress-days" class="text-xs font-semibold text-stone-400">Jour 1 sur 75</div>
+    <main id="view-progress" class="space-y-6 flex-grow hidden">
+        <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm space-y-6">
+            <h2 class="text-lg font-semibold flex items-center gap-2 text-slate-800">
+                <i data-lucide="trophy" class="w-5 h-5 text-amber-400"></i>
+                Progression du Challenge (75 Jours)
+            </h2>
+
+            <!-- Grande jauge % -->
+            <div class="text-center py-6 bg-amber-50/50 rounded-2xl border border-amber-100">
+                <div id="total-progress-percent" class="text-5xl font-black text-amber-500 mb-1">0%</div>
+                <div id="total-progress-days" class="text-sm font-medium text-slate-500">Jour 1 sur 75</div>
             </div>
 
-            <div class="space-y-1.5">
-                <div class="flex justify-between text-[11px] font-medium text-stone-400">
-                    <span>Départ</span>
+            <!-- Barre de progression globale -->
+            <div class="space-y-2">
+                <div class="flex justify-between text-xs text-slate-400">
+                    <span>Début du Challenge</span>
                     <span>Objectif 75 Jours</span>
                 </div>
-                <div class="w-full bg-stone-100 h-3 rounded-full overflow-hidden p-0.5">
-                    <div id="total-progress-bar" class="bg-gradient-to-r from-rose-200 via-amber-200 to-emerald-200 h-full rounded-full w-0 transition-all duration-700"></div>
+                <div class="w-full bg-slate-100 h-4 rounded-full overflow-hidden p-0.5 border border-slate-200">
+                    <div id="total-progress-bar" class="bg-gradient-to-r from-sky-200 via-rose-200 to-amber-200 h-full rounded-full w-0 transition-all duration-700"></div>
                 </div>
             </div>
 
-            <div class="pt-3 border-t border-stone-100">
-                <label class="block text-xs font-medium text-stone-400 mb-1.5">Date de démarrage :</label>
-                <input type="date" id="start-date-input" onchange="updateStartDate(this.value)" class="bg-stone-50 border border-stone-200 text-stone-700 text-xs rounded-xl px-3 py-2 w-full focus:outline-none">
+            <!-- Date de début paramétrable -->
+            <div class="pt-4 border-t border-slate-100">
+                <label class="block text-xs font-medium text-slate-500 mb-2">Date de démarrage du challenge :</label>
+                <input type="date" id="start-date-input" onchange="updateStartDate(this.value)" class="bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-xl px-3 py-2 w-full focus:outline-none focus:border-sky-300">
             </div>
         </div>
     </main>
 
-    <footer class="mt-6 text-center text-[10px] text-stone-300">
-        ELEVATE • Winter Arc Edition
+    <!-- Footer -->
+    <footer class="mt-8 text-center text-xs text-slate-400">
+        Winter Arc App &bull; Données enregistrées en local
     </footer>
+</div>
 
 <script>
     const DEFAULT_TASKS = [
-        "Réveil matinal doux",
-        "45 min Pilates / Marche",
-        "Lecture & Inspiration",
+        "Réveil matinal sans snooze",
+        "45 min de sport ou marche",
+        "Lecture (10 pages minimum)",
         "Hydratation (2L d'eau)",
-        "Nourriture saine & équilibrée"
+        "Pas d'alcool ni fast-food"
     ];
 
-    let tasks = JSON.parse(localStorage.getItem('elevate_tasks')) || DEFAULT_TASKS;
-    let history = JSON.parse(localStorage.getItem('elevate_history')) || {};
-    let notes = JSON.parse(localStorage.getItem('elevate_notes')) || {};
-    let startDate = localStorage.getItem('elevate_start_date') || getBrusselsDateString();
+    let tasks = JSON.parse(localStorage.getItem('winter_arc_tasks')) || DEFAULT_TASKS;
+    let history = JSON.parse(localStorage.getItem('winter_arc_history')) || {};
+    let startDate = localStorage.getItem('winter_arc_start_date') || getBrusselsDateString();
     let currentCalendarDate = new Date();
 
     function getBrusselsDateString(d = new Date()) {
         const options = { timeZone: 'Europe/Brussels', year: 'numeric', month: '2-digit', day: '2-digit' };
-        return new Intl.DateTimeFormat('fr-CA', options).format(d);
+        const formatter = new Intl.DateTimeFormat('fr-CA', options);
+        return formatter.format(d);
     }
 
     function init() {
@@ -159,13 +175,15 @@
         renderCalendar();
         renderProgress();
         updateHeader();
-        loadNote();
         lucide.createIcons();
     }
 
     function updateHeader() {
-        const today = new Date().toLocaleDateString('fr-FR', { timeZone: 'Europe/Brussels', weekday: 'long', day: 'numeric', month: 'long' });
-        document.getElementById('current-date-display').innerText = today;
+        const todayBrussels = new Date().toLocaleDateString('fr-FR', {
+            timeZone: 'Europe/Brussels',
+            weekday: 'long', day: 'numeric', month: 'long'
+        });
+        document.getElementById('current-date-display').innerText = todayBrussels;
 
         let streak = 0;
         let curr = new Date();
@@ -187,15 +205,16 @@
     function switchTab(tab) {
         ['daily', 'calendar', 'progress'].forEach(t => {
             document.getElementById(`view-${t}`).classList.add('hidden');
-            document.getElementById(`tab-${t}`).className = "flex-1 py-2 px-3 rounded-xl text-xs font-semibold flex items-center justify-center space-x-1.5 transition-all text-stone-400 hover:text-stone-700";
+            const btn = document.getElementById(`tab-${t}`);
+            btn.className = "flex-1 py-2.5 px-3 rounded-xl text-sm font-medium flex items-center justify-center space-x-2 transition-all text-slate-500 hover:text-slate-800";
         });
 
         document.getElementById(`view-${tab}`).classList.remove('hidden');
         const activeBtn = document.getElementById(`tab-${tab}`);
         
-        if (tab === 'daily') activeBtn.className = "flex-1 py-2 px-3 rounded-xl text-xs font-semibold flex items-center justify-center space-x-1.5 transition-all bg-emerald-50 text-emerald-800 border border-emerald-100 shadow-sm";
-        if (tab === 'calendar') activeBtn.className = "flex-1 py-2 px-3 rounded-xl text-xs font-semibold flex items-center justify-center space-x-1.5 transition-all bg-amber-50 text-amber-800 border border-amber-100 shadow-sm";
-        if (tab === 'progress') activeBtn.className = "flex-1 py-2 px-3 rounded-xl text-xs font-semibold flex items-center justify-center space-x-1.5 transition-all bg-rose-50 text-rose-800 border border-rose-100 shadow-sm";
+        if (tab === 'daily') activeBtn.className = "flex-1 py-2.5 px-3 rounded-xl text-sm font-medium flex items-center justify-center space-x-2 transition-all bg-sky-100 text-sky-700 shadow-sm";
+        if (tab === 'calendar') activeBtn.className = "flex-1 py-2.5 px-3 rounded-xl text-sm font-medium flex items-center justify-center space-x-2 transition-all bg-emerald-100 text-emerald-800 shadow-sm";
+        if (tab === 'progress') activeBtn.className = "flex-1 py-2.5 px-3 rounded-xl text-sm font-medium flex items-center justify-center space-x-2 transition-all bg-amber-100 text-amber-800 shadow-sm";
 
         if(tab === 'calendar') renderCalendar();
         if(tab === 'progress') renderProgress();
@@ -203,7 +222,9 @@
 
     function renderTasks() {
         const todayKey = getBrusselsDateString();
-        if (!history[todayKey]) history[todayKey] = { completed: [] };
+        if (!history[todayKey]) {
+            history[todayKey] = { completed: [] };
+        }
 
         const taskListEl = document.getElementById('task-list');
         taskListEl.innerHTML = '';
@@ -213,24 +234,24 @@
         tasks.forEach((task, index) => {
             const isChecked = completedSet.has(task);
             const item = document.createElement('div');
-            item.className = `flex items-center justify-between p-3 rounded-2xl border transition-all ${
-                isChecked ? 'bg-emerald-50/50 border-emerald-100' : 'bg-white border-stone-100/80 shadow-sm'
+            item.className = `flex items-center justify-between p-3.5 rounded-2xl border transition-all ${
+                isChecked ? 'bg-sky-50/60 border-sky-200' : 'bg-slate-50/50 border-slate-100'
             }`;
             item.innerHTML = `
                 <label class="flex items-center space-x-3 cursor-pointer flex-1">
-                    <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleTask('${task.replace(/'/g, "\\'")}')" class="w-4 h-4 rounded border-stone-300 text-emerald-500 focus:ring-emerald-200">
-                    <span class="text-xs font-medium ${isChecked ? 'line-through text-stone-300' : 'text-stone-700'}">${task}</span>
+                    <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleTask('${task.replace(/'/g, "\\'")}')" class="w-5 h-5 rounded-lg border-slate-300 text-sky-400 focus:ring-sky-300 bg-white">
+                    <span class="text-sm font-medium ${isChecked ? 'line-through text-slate-400' : 'text-slate-700'}">${task}</span>
                 </label>
-                <button onclick="deleteTask(${index})" class="text-stone-200 hover:text-rose-400 p-1">
-                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                <button onclick="deleteTask(${index})" class="text-slate-300 hover:text-rose-400 p-1 transition-colors">
+                    <i data-lucide="trash-2" class="w-4 h-4"></i>
                 </button>
             `;
             taskListEl.appendChild(item);
         });
 
         const pct = tasks.length > 0 ? Math.round((completedSet.size / tasks.length) * 100) : 0;
+        document.getElementById('daily-progress-bar').style.width = `${pct}%`;
         document.getElementById('daily-completion-badge').innerText = `${pct}%`;
-        document.getElementById('daily-subtext').innerText = `${completedSet.size} sur ${tasks.length} complétés`;
 
         lucide.createIcons();
     }
@@ -246,7 +267,7 @@
         }
 
         history[todayKey].completed = completed;
-        localStorage.setItem('elevate_history', JSON.stringify(history));
+        localStorage.setItem('winter_arc_history', JSON.stringify(history));
         renderTasks();
         updateHeader();
     }
@@ -257,7 +278,7 @@
         const val = input.value.trim();
         if (val) {
             tasks.push(val);
-            localStorage.setItem('elevate_tasks', JSON.stringify(tasks));
+            localStorage.setItem('winter_arc_tasks', JSON.stringify(tasks));
             input.value = '';
             renderTasks();
         }
@@ -265,19 +286,8 @@
 
     function deleteTask(index) {
         tasks.splice(index, 1);
-        localStorage.setItem('elevate_tasks', JSON.stringify(tasks));
+        localStorage.setItem('winter_arc_tasks', JSON.stringify(tasks));
         renderTasks();
-    }
-
-    function saveNote(val) {
-        const todayKey = getBrusselsDateString();
-        notes[todayKey] = val;
-        localStorage.setItem('elevate_notes', JSON.stringify(notes));
-    }
-
-    function loadNote() {
-        const todayKey = getBrusselsDateString();
-        document.getElementById('daily-note').value = notes[todayKey] || '';
     }
 
     function renderCalendar() {
@@ -295,24 +305,31 @@
         let startingDay = firstDay.getDay() - 1;
         if (startingDay === -1) startingDay = 6;
 
-        for (let i = 0; i < startingDay; i++) grid.appendChild(document.createElement('div'));
+        for (let i = 0; i < startingDay; i++) {
+            grid.appendChild(document.createElement('div'));
+        }
 
         for (let day = 1; day <= lastDay.getDate(); day++) {
             const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
             const cell = document.createElement('div');
 
             const dayData = history[dateStr];
-            let bgColor = 'bg-stone-50 text-stone-300 border-transparent';
+            let bgColor = 'bg-slate-50 text-slate-400 border-slate-100';
 
             if (dayData && dayData.completed && tasks.length > 0) {
                 const ratio = dayData.completed.length / tasks.length;
-                if (ratio === 1) bgColor = 'bg-emerald-100 text-emerald-800 border-emerald-200 font-bold';
-                else if (ratio >= 0.5) bgColor = 'bg-amber-100 text-amber-800 border-amber-200 font-medium';
-                else if (ratio > 0) bgColor = 'bg-rose-100 text-rose-800 border-rose-200 font-medium';
+                if (ratio === 1) {
+                    bgColor = 'bg-emerald-100 text-emerald-800 border-emerald-200 font-bold'; // 100%
+                } else if (ratio >= 0.5) {
+                    bgColor = 'bg-amber-100 text-amber-800 border-amber-200 font-medium'; // >= 50%
+                } else if (ratio > 0) {
+                    bgColor = 'bg-rose-100 text-rose-800 border-rose-200 font-medium'; // < 50%
+                }
             }
 
             const isToday = dateStr === getBrusselsDateString();
-            cell.className = `aspect-square rounded-xl border flex items-center justify-center text-xs transition-all ${bgColor} ${isToday ? 'ring-2 ring-stone-400' : ''}`;
+
+            cell.className = `aspect-square rounded-2xl border flex flex-col items-center justify-center text-xs transition-all ${bgColor} ${isToday ? 'ring-2 ring-sky-300' : ''}`;
             cell.innerText = day;
             grid.appendChild(cell);
         }
@@ -326,6 +343,7 @@
     function renderProgress() {
         const start = new Date(startDate);
         const today = new Date(getBrusselsDateString());
+
         const diffTime = today - start;
         const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
 
@@ -340,7 +358,7 @@
     function updateStartDate(val) {
         if (val) {
             startDate = val;
-            localStorage.setItem('elevate_start_date', val);
+            localStorage.setItem('winter_arc_start_date', val);
             renderProgress();
             updateHeader();
         }
