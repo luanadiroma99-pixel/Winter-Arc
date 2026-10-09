@@ -158,9 +158,42 @@ header.brand h1.brand-title{font-size:32px;margin:0;white-space:nowrap;text-alig
 .brand-count span{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#857562;margin-top:3px}
 .brand-rule{margin:14px auto 12px}
 .brand-date{margin:0 0 4px}
+
+/* ===== OUVERTURE ===== */
+#splash{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#f6f1e8;background-image:radial-gradient(520px 380px at 105% -5%,rgba(147,164,104,.28),transparent 70%),radial-gradient(460px 340px at -10% 105%,rgba(215,127,93,.22),transparent 70%);transition:opacity .6s ease,transform .6s ease;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+#splash.out{opacity:0;transform:scale(1.03);pointer-events:none}
+.sp-inner{text-align:center}
+.sp-mark{width:112px;height:112px;display:block;margin:0 auto 22px}
+.sp-c1{stroke-dasharray:330;stroke-dashoffset:330;animation:spdraw 1.1s ease forwards}
+.sp-c2{stroke-dasharray:150;stroke-dashoffset:150;animation:spdraw .9s ease .5s forwards}
+.sp-title{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font-size:40px;font-weight:500;letter-spacing:.04em;color:#3a322a;opacity:0;transform:translateY(8px);animation:spup .7s ease .7s forwards}
+.sp-rule{display:flex;align-items:center;justify-content:center;gap:12px;margin:14px 0 12px;opacity:0;animation:spup .6s ease 1s forwards}
+.sp-rule span{width:48px;height:1px;background:#cdbfab}.sp-rule i{width:6px;height:6px;background:#c4633f;transform:rotate(45deg)}
+.sp-by{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font-style:italic;font-size:16px;color:#857562;opacity:0;animation:spup .6s ease 1.15s forwards}
+.sp-hello{position:absolute;bottom:calc(48px + env(safe-area-inset-bottom,0px));font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:#a8977f;opacity:0;animation:spup .6s ease 1.3s forwards}
+@keyframes spdraw{to{stroke-dashoffset:0}}
+@keyframes spup{to{opacity:1;transform:none}}
+/* ===== GLISSER ENTRE LES ONGLETS ===== */
+@keyframes slidel{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
+@keyframes slider{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:none}}
+.slide-l{animation:slidel .28s ease}.slide-r{animation:slider .28s ease}
+@media (prefers-reduced-motion:reduce){.sp-c1,.sp-c2,.sp-title,.sp-rule,.sp-by,.sp-hello{animation:none;opacity:1;stroke-dashoffset:0;transform:none}.slide-l,.slide-r{animation:none}}
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800">
+<div id="splash" role="presentation" aria-hidden="true">
+    <div class="sp-inner">
+        <svg class="sp-mark" viewBox="0 0 120 120" fill="none" stroke-linecap="round">
+            <circle class="sp-c1" cx="60" cy="60" r="52" stroke="#c4633f" stroke-width="1.5"/>
+            <path class="sp-c2" d="M60 88V50M60 66c-14 0-22-8-22-22 14 0 22 8 22 22Zm0-8c10 0 16-6 16-16-10 0-16 6-16 16Z" stroke="#7a8c52" stroke-width="2.4" stroke-linejoin="round"/>
+        </svg>
+        <div class="sp-title">Winter Arc</div>
+        <div class="sp-rule"><span></span><i></i><span></span></div>
+        <div class="sp-by">by Luana</div>
+    </div>
+    <div class="sp-hello" id="sp-hello"></div>
+</div>
+
 <div class="min-h-screen flex flex-col justify-between max-w-2xl mx-auto px-4 py-6">
 
     <!-- Header -->
@@ -361,7 +394,9 @@ header.brand h1.brand-title{font-size:32px;margin:0;white-space:nowrap;text-alig
         progress: "bg-amber-100 text-amber-800 shadow-sm"
     };
 
-    function switchTab(tab) {
+    const TABS = ['daily', 'sport', 'calendar', 'progress'];
+    let currentTab = 'daily';
+    function switchTab(tab, dir) {
         ['daily', 'sport', 'calendar', 'progress'].forEach(t => {
             document.getElementById(`view-${t}`).classList.add('hidden');
             document.getElementById(`tab-${t}`).className = TAB_BASE + "text-slate-500 hover:text-slate-800";
@@ -372,6 +407,11 @@ header.brand h1.brand-title{font-size:32px;margin:0;white-space:nowrap;text-alig
 
         if(tab === 'calendar') renderCalendar();
         if(tab === 'progress') renderProgress();
+
+        currentTab = tab;
+        const v = document.getElementById(`view-${tab}`);
+        v.classList.remove('slide-l', 'slide-r');
+        if (dir) { void v.offsetWidth; v.classList.add(dir > 0 ? 'slide-l' : 'slide-r'); window.scrollTo(0, 0); }
     }
 
     function renderTasks() {
@@ -652,6 +692,32 @@ function checkTasks(d){if(d!==today())return;try{const k=today();history[k]=hist
 let _day=getBrusselsDateString();
 function tickDay(){const d=getBrusselsDateString();if(d===_day)return;_day=d;renderTasks();renderCalendar();renderProgress();updateHeader();sel=d;wk=mon(new Date(d+"T12:00"));draw()}
 setInterval(tickDay,60000);document.addEventListener("visibilitychange",()=>{if(!document.hidden)tickDay()});
+
+/* ===== Ouverture de l'app ===== */
+(function(){
+  const sp=document.getElementById("splash");if(!sp)return;
+  const h=+new Intl.DateTimeFormat("fr-FR",{timeZone:"Europe/Brussels",hour:"numeric",hour12:false}).format(new Date());
+  document.getElementById("sp-hello").textContent=h>=18||h<4?"Bonsoir":"Bonjour";
+  let gone=false;const close=()=>{if(gone)return;gone=true;sp.classList.add("out");setTimeout(()=>sp.remove(),700)};
+  sp.addEventListener("click",close);setTimeout(close,matchMedia("(prefers-reduced-motion:reduce)").matches?600:2300);
+})();
+/* ===== Glisser d'un onglet à l'autre ===== */
+(function(){
+  let sx=0,sy=0,st=0,on=false;
+  const scrollableX=el=>{for(;el&&el!==document.body;el=el.parentElement){const o=getComputedStyle(el).overflowX;if((o==="auto"||o==="scroll")&&el.scrollWidth>el.clientWidth)return true}return false};
+  document.addEventListener("touchstart",e=>{
+    const t=e.touches[0],el=e.target;
+    on=e.touches.length===1&&!document.getElementById("splash")&&!el.closest("input,select,textarea")&&!scrollableX(el)&&t.clientX>24&&t.clientX<innerWidth-24;
+    sx=t.clientX;sy=t.clientY;st=Date.now();
+  },{passive:true});
+  document.addEventListener("touchend",e=>{
+    if(!on)return;on=false;
+    const t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;
+    if(Math.abs(dx)<70||Math.abs(dy)>Math.abs(dx)*.6||Date.now()-st>700)return;
+    const i=TABS.indexOf(currentTab),n=i+(dx<0?1:-1);
+    if(n>=0&&n<TABS.length)switchTab(TABS[n],dx<0?1:-1);
+  },{passive:true});
+})();
 </script>
 </body>
 </html>
